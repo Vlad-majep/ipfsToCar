@@ -7,10 +7,10 @@ import { Readable } from 'stream';
 import asyncIteratorToStream from "async-iterator-to-stream";
 
 async function convertHashToCar(ipfsHash) {
-  process.on('uncaughtException', (err) => {
-    console.error('There was an uncaught error', err);
-    // process.exit(1) //mandatory (as per the Node docs)
-  });
+  // process.on('uncaughtException', (err) => {
+  //   console.error('There was an uncaught error', err);
+  //   // process.exit(1) //mandatory (as per the Node docs)
+  // });
 
   // Create an instance of IPFS client
   const ipfs = create();
@@ -41,24 +41,30 @@ async function convertHashToCar(ipfsHash) {
   console.log('bytesIterable', bytesIterable);
   console.log('writer', writer);
   
-  writer._mutex.then(r => {
-    console.log('writer._mutex', r);
-  }).catch(e => {
-    console.error('writer._mutex e', e);
-  });
+  // writer._mutex.then(r => {
+  //   console.log('writer._mutex', r);
+  // }).catch(e => {
+  //   console.error('writer._mutex e', e);
+  // });
   
   Readable.from(out).pipe(fs.createWriteStream('example.car'));
-  await new Promise((resolve) => {
-    asyncIteratorToStream(bytesIterable)
-        .on('data', (chunk) => {
-          console.log('data', chunk);
-          writer.put({cid: cid, bytes: chunk});
-        })
-        .on('close', (chunk) => {
-          console.log('close');
-          resolve();
-        });
-  });
+  
+  // await new Promise((resolve) => {
+  //   asyncIteratorToStream(bytesIterable)
+  //       .on('data', (chunk) => {
+  //         console.log('data', chunk);
+  //         writer.put({cid: cid, bytes: chunk});
+  //       })
+  //       .on('close', (chunk) => {
+  //         console.log('close');
+  //         resolve();
+  //       });
+  // });
+
+  for await (const chunk of bytesStream) {
+    await writer.put({ bytes: chunk });
+  }
+
 
   console.log('after await');
   
