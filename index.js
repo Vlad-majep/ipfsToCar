@@ -1,49 +1,64 @@
 import { create } from 'ipfs-http-client';
 import { CarWriter } from '@ipld/car';
 import { CID } from 'multiformats/cid';
+import { MemoryBlockstore } from 'blockstore-core/memory';
 import fs from 'fs';
-import itToStream from "it-to-stream";
+import { Readable } from 'stream';
+import asyncIteratorToStream from "async-iterator-to-stream";
 
 async function convertHashToCar(ipfsHash) {
 
+  // Create an instance of IPFS client
   const ipfs = create({ url: "http://127.0.0.1:5001" });
 
+  // Convert ipfsHash to CID instance
   let cid;
   try {
     cid = CID.parse(ipfsHash);
     console.log(`CID successfully created: ${cid.toString()}`);
+    console.log(`CID Object: `, cid);
   } catch (err) {
     console.error('Error while creating CID:', err);
     return;
   }
 
-  let { writer, out } = await CarWriter.create([cid]);
+  console.log('cid[\'/\']', cid['/']);
+  // Create a Writer for CAR
+  let writer, out;
+  try {
+    ({ writer, out } = await CarWriter.create(cid));
+  } catch (err) {
+    console.error('Error while creating CAR writer:', err);
+    return;
+  }
+ 
+  // Get the stream of bytes by IPFS hash
+  const bytesIterable = ipfs.cat(ipfsHash);
+  console.log('bytesIterable', bytesIterable);
+  console.log('writer', writer);
+  console.log("!111111");
 
-  const bytesIterable = ipfs.cat(cid);
-
+  Readable.from(out).pipe(fs.createWriteStream('example.car'));
+  console.log("!22222");
   for await (const chunk of bytesIterable) {
     console.log(chunk);
-    await writer.put({ cid, bytes: chunk });
+    await writer.put({ bytes: chunk });
   }
 
-  await writer.close();
 
-  const outStream = itToStream.readable(out);
-  const fileStream = fs.createWriteStream('example.car');
+  console.log('after await');
 
-  fileStream.on('finish', () => {
-    console.log('File successfully written to disk.');
-  });
-
-  outStream.pipe(fileStream);
 }
 
-convertHashToCar('bafkreiftgqgcr6ivx5spmkbklxilkfie4bvs7ckapanvbb5cmj2ty44dei').catch(console.error);
+// Example of use
+convertHashToCar('bafkreiftgqgcr6ivx5spmkbklxilkfie4bvs7ckapanvbb5cmj2ty44dei').catch(console.error); // site
+// convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 process.once('uncaughtException', (err, origin) => {
   console.error(err);
 })
 
+  
   // writer._mutex.then(r => {
   //   console.log('writer._mutex', r);
   // }).catch(e => {
