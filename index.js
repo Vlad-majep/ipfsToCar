@@ -46,10 +46,10 @@ async function convertHashToCar(ipfsHash) {
   }).catch(e => {
     console.error('writer._mutex e', e);
   });
-  console.log("!!!!!!!");
+  
   Readable.from(out).pipe(fs.createWriteStream('example.car'));
-  console.log("!!!!!!!");
   await new Promise((resolve) => {
+    console.log("!!!!!!!");
     asyncIteratorToStream(bytesIterable)
         .on('data', (chunk) => {
           console.log('data', chunk);
