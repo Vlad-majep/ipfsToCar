@@ -5,6 +5,7 @@ import { MemoryBlockstore } from 'blockstore-core/memory';
 import fs from 'fs';
 import { Readable } from 'stream';
 import asyncIteratorToStream from "async-iterator-to-stream";
+import { log } from 'util';
 
 async function convertHashToCar(ipfsHash) {
   // process.on('uncaughtException', (err) => {
@@ -62,6 +63,7 @@ async function convertHashToCar(ipfsHash) {
   // });
 
   for await (const chunk of bytesIterable) {
+    console.log(chunk);
     await writer.put({ bytes: chunk });
   }
 
