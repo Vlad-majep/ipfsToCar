@@ -46,8 +46,8 @@ async function convertHashToCar(ipfsHash) {
   }
 
   await writer.close();
-  
-  Readable.from(out).pipe(fs.createWriteStream('example.car'));
+
+  Readable.from(out).pipe(fs.createWriteStream('e111xample.car'));
 
 
   console.log('after await');
