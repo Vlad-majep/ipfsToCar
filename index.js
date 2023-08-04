@@ -29,7 +29,13 @@ async function convertHashToCar(ipfsHash) {
   await writer.close();
 
   const outStream = itToStream.readable(out);
-  outStream.pipe(fs.createWriteStream('example.car'));
+  const fileStream = fs.createWriteStream('example.car');
+
+  fileStream.on('finish', () => {
+    console.log('File successfully written to disk.');
+  });
+
+  outStream.pipe(fileStream);
 }
 
 convertHashToCar('bafkreiftgqgcr6ivx5spmkbklxilkfie4bvs7ckapanvbb5cmj2ty44dei').catch(console.error);
