@@ -13,7 +13,7 @@ async function convertHashToCar(ipfsHash) {
   // });
 
   // Create an instance of IPFS client
-  const ipfs = create();
+  const ipfs = create({ url: "http://127.0.0.1:5001" });
 
   // Convert ipfsHash to CID instance
   let cid;
