@@ -48,7 +48,7 @@ async function convertHashToCar(ipfsHash) {
   // });
   
   Readable.from(out).pipe(fs.createWriteStream('example.car'));
-  
+
   // await new Promise((resolve) => {
   //   asyncIteratorToStream(bytesIterable)
   //       .on('data', (chunk) => {
@@ -61,7 +61,7 @@ async function convertHashToCar(ipfsHash) {
   //       });
   // });
 
-  for await (const chunk of bytesStream) {
+  for await (const chunk of bytesIterable) {
     await writer.put({ bytes: chunk });
   }
 
