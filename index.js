@@ -37,7 +37,7 @@ async function convertHashToCar(ipfsHash) {
   }
  
   // Get the stream of bytes by IPFS hash
-  const bytesIterable = await ipfs.cat(ipfsHash);
+  const bytesIterable = ipfs.cat(ipfsHash);
   console.log('bytesIterable', bytesIterable);
   console.log('writer', writer);
   
@@ -49,7 +49,6 @@ async function convertHashToCar(ipfsHash) {
   
   Readable.from(out).pipe(fs.createWriteStream('example.car'));
   await new Promise((resolve) => {
-    console.log("!!!!!!!");
     asyncIteratorToStream(bytesIterable)
         .on('data', (chunk) => {
           console.log('data', chunk);
