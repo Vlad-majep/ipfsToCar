@@ -7,6 +7,11 @@ import { Readable } from 'stream';
 import asyncIteratorToStream from "async-iterator-to-stream";
 
 async function convertHashToCar(ipfsHash) {
+  process.on('uncaughtException', (err) => {
+    console.error('There was an uncaught error', err);
+    // process.exit(1) //mandatory (as per the Node docs)
+  });
+
   // Create an instance of IPFS client
   const ipfs = create();
 
@@ -30,19 +35,20 @@ async function convertHashToCar(ipfsHash) {
     console.error('Error while creating CAR writer:', err);
     return;
   }
-
+ 
   // Get the stream of bytes by IPFS hash
   const bytesIterable = await ipfs.cat(ipfsHash);
   console.log('bytesIterable', bytesIterable);
   console.log('writer', writer);
-
+  
   writer._mutex.then(r => {
     console.log('writer._mutex', r);
   }).catch(e => {
     console.error('writer._mutex e', e);
   });
+  console.log("!!!!!!!");
   Readable.from(out).pipe(fs.createWriteStream('example.car'));
-
+  console.log("!!!!!!!");
   await new Promise((resolve) => {
     asyncIteratorToStream(bytesIterable)
         .on('data', (chunk) => {
@@ -56,6 +62,7 @@ async function convertHashToCar(ipfsHash) {
   });
 
   console.log('after await');
+  
   //
   // bytesIterable.pipe(writer);
   // // Read the stream of bytes and add blocks to CAR
