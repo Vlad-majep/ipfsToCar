@@ -1,5 +1,5 @@
 import { create } from 'ipfs-http-client';
-
+import { Web3Storage } from 'web3.storage'
 
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
@@ -10,9 +10,12 @@ async function getLinks(ipfsPath) {
   console.log(links);
 }
 async function retrieve (cid) {
-  const client = create({ url: "http://127.0.0.1:5001" });
+  const client = makeStorageClient();
   const res = await client.cat(cid)
-  console.log(`Got a response! [${res}]`)
+  console.log(`Got a response! [${res.status}] ${res.statusText}`)
+  if (!res.ok) {
+    throw new Error(`failed to get ${cid}`)
+  }
 
   // request succeeded! do something with the response object here...
 }
