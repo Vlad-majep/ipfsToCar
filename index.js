@@ -39,19 +39,21 @@ async function convertHashToCar(ipfsHash) {
   console.log("!111111");
 
   console.log("!22222");
-  Readable.from(out).pipe(fs.createWriteStream('result22.car'))
+  Readable.from(out).pipeTo(fs.createWriteStream('re1111sult.car'))
 
   await writer.close();
+
   console.log('after await');
+
 }
 
 // Example of use
-convertHashToCar('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
+convertHashToCar('bafkreiftgqgcr6ivx5spmkbklxilkfie4bvs7ckapanvbb5cmj2ty44dei').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
-// process.once('uncaughtException', (err, origin) => {
-//   console.error(err);
-// })
+process.once('uncaughtException', (err, origin) => {
+  console.error(err);
+})
 
   
   // writer._mutex.then(r => {
