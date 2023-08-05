@@ -48,7 +48,7 @@ async function convertHashToCar(ipfsHash) {
 }
 
 // Example of use
-convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // site
+convertHashToCar('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 process.once('uncaughtException', (err, origin) => {
