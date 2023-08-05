@@ -39,7 +39,7 @@ async function convertHashToCar(ipfsHash) {
   console.log("!111111");
 
   console.log("!22222");
-  Readable.from(out).pipe(fs.createWriteStream('re1111sult.car'))
+  Readable.from(out).pipe(fs.createWriteStream('result.car'))
 
   await writer.close();
 
@@ -48,7 +48,7 @@ async function convertHashToCar(ipfsHash) {
 }
 
 // Example of use
-convertHashToCar('bafkreiftgqgcr6ivx5spmkbklxilkfie4bvs7ckapanvbb5cmj2ty44dei').catch(console.error); // site
+convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 process.once('uncaughtException', (err, origin) => {
