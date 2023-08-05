@@ -1,12 +1,17 @@
-import { Writable } from 'stream'
-import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
-import { filesFromPaths } from 'files-from-path'
+import { create } from 'ipfs-http-client';
 
+async function convertHashToCar(ipfsHash) {
 
-await createDirectoryEncoderStream("bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e")
-  .pipeThrough(new CAREncoderStream())
-  .pipeTo(fs.createWriteStream('result11.car'))
+  // Create an instance of IPFS client
+  const ipfs = create({ url: "http://127.0.0.1:5001" });
+  const links = [];
+  for await (const link of ipfs.ls(ipfsHash)) {
+    links.push(link);
+  }
+  console.log(links);
+}
 
+// Example of use
 convertHashToCar('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
