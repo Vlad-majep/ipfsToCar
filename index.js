@@ -3,12 +3,12 @@ import { create } from 'ipfs-http-client';
 async function convertHashToCar(ipfsHash) {
 
   // Create an instance of IPFS client
-  const ipfs = create({ url: "http://127.0.0.1:5001" });
-  const links = [];
-  for await (const link of ipfs.ls(ipfsHash)) {
-    links.push(link);
+  const client = create({ url: "http://127.0.0.1:5001" });
+  const res = await client.get(ipfsHash)
+  console.log(`Got a response! [${res.status}] ${res.statusText}`)
+  if (!res.ok) {
+    throw new Error(`failed to get ${cid}`)
   }
-  console.log(links);
 }
 
 // Example of use
