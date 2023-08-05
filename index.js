@@ -20,7 +20,7 @@ async function retrieve (cid) {
   // request succeeded! do something with the response object here...
 }
 // Example of use
-retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html').catch(console.error); // site
+retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e.ipfs.w3s.link/index.html').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 
