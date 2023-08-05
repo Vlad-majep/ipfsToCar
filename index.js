@@ -1,18 +1,17 @@
 import { create } from 'ipfs-http-client';
 
-async function convertHashToCar(ipfsHash) {
 
-  // Create an instance of IPFS client
+async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
-  const res = await client.get(ipfsHash)
-  console.log(`Got a response! [${res.status}] ${res.statusText}`)
-  if (!res.ok) {
-    throw new Error(`failed to get ${cid}`)
+  const links = [];
+  for await (const link of client.ls(ipfsPath)) {
+    links.push(link);
   }
+  console.log(links);
 }
 
 // Example of use
-await convertHashToCar('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
+getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 process.once('uncaughtException', (err, origin) => {
