@@ -1,53 +1,12 @@
-import { create } from 'ipfs-http-client';
-import { CarWriter } from '@ipld/car';
-import { CID } from 'multiformats/cid';
-import { MemoryBlockstore } from 'blockstore-core/memory';
-import fs from 'fs';
-import { Readable } from 'stream';
-import asyncIteratorToStream from "async-iterator-to-stream";
+import { Writable } from 'stream'
+import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
+import { filesFromPaths } from 'files-from-path'
 
-async function convertHashToCar(ipfsHash) {
 
-  // Create an instance of IPFS client
-  const ipfs = create({ url: "http://127.0.0.1:5001" });
+await createDirectoryEncoderStream("bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e")
+  .pipeThrough(new CAREncoderStream())
+  .pipeTo(fs.createWriteStream('result11.car'))
 
-  // Convert ipfsHash to CID instance
-  let cid;
-  try {
-    cid = CID.parse(ipfsHash);
-    console.log(`CID successfully created: ${cid.toString()}`);
-    console.log(`CID Object: `, cid);
-  } catch (err) {
-    console.error('Error while creating CID:', err);
-    return;
-  }
-
-  console.log('cid[\'/\']', cid['/']);
-  // Create a Writer for CAR
-  let writer, out;
-  try {
-    ({ writer, out } = await CarWriter.create(cid));
-  } catch (err) {
-    console.error('Error while creating CAR writer:', err);
-    return;
-  }
- 
-  // Get the stream of bytes by IPFS hash
-  const bytesIterable = ipfs.cat(ipfsHash);
-  console.log('bytesIterable', bytesIterable);
-  console.log('writer', writer);
-  console.log("!111111");
-
-  console.log("!22222");
-  Readable.from(out).pipe(fs.createWriteStream('result.car'))
-
-  await writer.close();
-
-  console.log('after await');
-
-}
-
-// Example of use
 convertHashToCar('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
