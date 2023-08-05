@@ -43,10 +43,6 @@ async function convertHashToCar(ipfsHash) {
 
   await writer.close();
   console.log('after await');
-
-  await createDirectoryEncoderStream(files)
-  .pipeThrough(new CAREncoderStream())
-  .pipeTo(fs.createWriteStream('result.car'))
 }
 
 // Example of use
