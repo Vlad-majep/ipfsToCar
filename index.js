@@ -42,7 +42,7 @@ async function convertHashToCar(ipfsHash) {
   Readable.from(out).pipe(fs.createWriteStream('result22.car'))
 
   await writer.close();
-  const linksss = getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e');
+  const linksss = ipfs.getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e');
   console.log(linksss);
   console.log('after await');
 
