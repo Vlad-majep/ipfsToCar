@@ -46,7 +46,7 @@ async function convertHashToCar(ipfsHash) {
   console.log('after await');
 
   const links = [];
-  for await (const link of ipfs.ls("./result22.car")) {
+  for await (const link of ipfs.ls("/result22.car")) {
     links.push(link);
   }
   console.log(links);
