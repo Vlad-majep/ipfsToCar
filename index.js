@@ -17,6 +17,11 @@ async function retrieve (cid) {
     throw new Error(`failed to get ${cid}`)
   }
 
+  // unpack File objects from the response
+  const files = await res.files()
+  for (const file of files) {
+    console.log(`${file.cid} -- ${file.path} -- ${file.size}`)
+  }
   // request succeeded! do something with the response object here...
 }
 function makeStorageClient () {
