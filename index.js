@@ -9,32 +9,34 @@ async function getLinks(ipfsPath) {
   }
   console.log(links);
 }
-async function retrieve (cid) {
-  const client = makeStorageClient();
-  const res = await client.get(cid)
-  console.log(`Got a response! [${res.status}] ${res.statusText}`)
-  if (!res.ok) {
-    throw new Error(`failed to get ${cid}`)
-  }
 
-  // unpack File objects from the response
-  const files = await res.files()
-  for (const file of files) {
-    console.log(`${file.cid} -- ${file.path} -- ${file.size}`)
-  }
-  // request succeeded! do something with the response object here...
-}
-function makeStorageClient () {
-  return new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY4MmU1QTc4NDAzNTllNTU2NUFDMTgyOWNhNEMwMTA0MjYyMENDQkUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODkwMTMyODYyNTgsIm5hbWUiOiJ0ZXN0In0.OeWGKuWHSgGUOttrL4MqqdxSZZ3Z9pBM6tTX8O3oDlA" })
-}
 // Example of use
-retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
+getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 
 
 
+// async function retrieve (cid) {
+//   const client = makeStorageClient();
+//   const res = await client.get(cid)
+//   console.log(`Got a response! [${res.status}] ${res.statusText}`)
+//   if (!res.ok) {
+//     throw new Error(`failed to get ${cid}`)
+//   }
 
+//   // unpack File objects from the response
+//   const files = await res.files()
+//   for (const file of files) {
+//     console.log(`${file.cid} -- ${file.path} -- ${file.size}`)
+//   }
+//   // request succeeded! do something with the response object here...
+// }
+
+
+// function makeStorageClient () {
+//   return new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY4MmU1QTc4NDAzNTllNTU2NUFDMTgyOWNhNEMwMTA0MjYyMENDQkUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODkwMTMyODYyNTgsIm5hbWUiOiJ0ZXN0In0.OeWGKuWHSgGUOttrL4MqqdxSZZ3Z9pBM6tTX8O3oDlA" })
+// }
 
 
 
