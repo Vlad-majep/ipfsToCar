@@ -10,7 +10,7 @@ async function getLinks(ipfsPath) {
   console.log(links);
 }
 async function retrieve (cid) {
-  const client = create({ url: "http://127.0.0.1:5001" });
+  const client = makeStorageClient();
   const res = await client.get(cid)
   console.log(`Got a response! [${res.status}] ${res.statusText}`)
   if (!res.ok) {
@@ -18,6 +18,9 @@ async function retrieve (cid) {
   }
 
   // request succeeded! do something with the response object here...
+}
+function makeStorageClient () {
+  return new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY4MmU1QTc4NDAzNTllNTU2NUFDMTgyOWNhNEMwMTA0MjYyMENDQkUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODkwMTMyODYyNTgsIm5hbWUiOiJ0ZXN0In0.OeWGKuWHSgGUOttrL4MqqdxSZZ3Z9pBM6tTX8O3oDlA" })
 }
 // Example of use
 retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
