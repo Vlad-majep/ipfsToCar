@@ -39,7 +39,7 @@ async function convertHashToCar(ipfsHash) {
   console.log("!111111");
 
   console.log("!22222");
-  Readable.from(out).pipeTo(fs.createWriteStream('re1111sult.car'))
+  Readable.from(out).pipe(fs.createWriteStream('re1111sult.car'))
 
   await writer.close();
 
