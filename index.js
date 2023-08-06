@@ -19,14 +19,14 @@ async function getFile(cid) {
   return Buffer.concat(chunks);
 }
 
-getFile(CID).then(content => {
+getFile('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').then(content => {
   console.log('File content:', content.toString());
 }).catch(error => {
   console.error('An error occurred:', error);
 });
 
 // Example of use
-getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
+getFile11('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
 
