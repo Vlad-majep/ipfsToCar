@@ -1,6 +1,16 @@
 import { create } from 'ipfs-http-client';
 import { Web3Storage } from 'web3.storage'
 
+
+async function retrieve (cid) {
+  const client = create({ url: "http://127.0.0.1:5001" });
+  const res = await client.get(cid)
+  console.log(`Got a response! [${res.status}] ${res.statusText}`)
+  if (!res.ok) {
+    throw new Error(`failed to get ${cid}`)
+  }
+}
+
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
   const links = [];
@@ -9,7 +19,6 @@ async function getLinks(ipfsPath) {
   }
   console.log(links);
 }
-
 // Example of use
 getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
@@ -17,13 +26,9 @@ getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html
 
 
 
-// async function retrieve (cid) {
-//   const client = makeStorageClient();
-//   const res = await client.get(cid)
-//   console.log(`Got a response! [${res.status}] ${res.statusText}`)
-//   if (!res.ok) {
-//     throw new Error(`failed to get ${cid}`)
-//   }
+
+
+
 
 //   // unpack File objects from the response
 //   const files = await res.files()
