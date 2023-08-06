@@ -11,14 +11,19 @@ async function retrieve (cid) {
   }
 }
 
-async function getLinks(ipfsPath) {
-  const client = ipfsClient({ url: "http://127.0.0.1:5001" });
-  client.cat(ipfsPath).then(buffer => {
-    console.log('File content:', buffer.toString());
-  }).catch(error => {
-    console.error('An error occurred:', error);
-  });
+async function getFile(cid) {
+  const chunks = [];
+  for await (const chunk of ipfs.cat(cid)) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
 }
+
+getFile(CID).then(content => {
+  console.log('File content:', content.toString());
+}).catch(error => {
+  console.error('An error occurred:', error);
+});
 
 // Example of use
 getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
