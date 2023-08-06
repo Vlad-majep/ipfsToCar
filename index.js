@@ -12,7 +12,7 @@ async function retrieve (cid) {
 }
 
 async function getLinks(ipfsPath) {
-  const client = create({ url: "http://127.0.0.1:5001" });
+  const client = ipfsClient({ url: "http://127.0.0.1:5001" });
   client.cat(ipfsPath).then(buffer => {
     console.log('File content:', buffer.toString());
   }).catch(error => {
