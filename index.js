@@ -1,6 +1,9 @@
 import { create } from 'ipfs-http-client';
 import { unixfs } from '@helia/unixfs'
+import { createHelia } from 'helia'
 
+// create a Helia node
+const helia = await createHelia()
 async function getFile(cid) {
   const fs = unixfs(helia)
   const decoder = new TextDecoder()
