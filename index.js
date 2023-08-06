@@ -13,8 +13,10 @@ async function retrieve (cid) {
 
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
-
-  console.log(client);
+  const get = client.get(ipfsPath);
+  const cat = client.cat(ipfsPath);
+  console.log("get", get);
+  console.log("cat", cat);
 }
 
 // Example of use
