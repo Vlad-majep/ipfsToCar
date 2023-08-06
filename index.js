@@ -14,11 +14,7 @@ async function retrieve (cid) {
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
 
-  const links = [];
-  for await (const link of client.ls(ipfsPath)) {
-    links.push(link);
-  }
-  console.log(links);
+  console.log(client);
 }
 
 // Example of use
