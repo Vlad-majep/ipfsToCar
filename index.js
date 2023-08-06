@@ -18,12 +18,6 @@ retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html
 
 
 
-
-
-
-
-
-
 //   // unpack File objects from the response
 //   const files = await res.files()
 //   for (const file of files) {
