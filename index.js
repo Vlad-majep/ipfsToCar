@@ -1,36 +1,33 @@
 import { create } from 'ipfs-http-client';
-import { Web3Storage } from 'web3.storage'
-
-
-async function retrieve (cid) {
-  const client = create({ url: "http://127.0.0.1:5001" });
-  const res = await client.get(cid)
-  console.log(`Got a response! [${res.status}] ${res.statusText}`)
-  if (!res.ok) {
-    throw new Error(`failed to get ${cid}`)
-  }
-}
+import { unixfs } from '@helia/unixfs'
 
 async function getFile(cid) {
-  const ipfs = create({ url: "http://127.0.0.1:5001" });
-  const chunks = [];
-  for await (const chunk of ipfs.cat(cid)) {
-    chunks.push(chunk);
-  }
-  return Buffer.concat(chunks);
+  const fs = unixfs(helia)
+  const decoder = new TextDecoder()
+    let text = ''
+
+    for await (const chunk of fs.cat(cid)) {
+      text += decoder.decode(chunk, {
+        stream: true
+      })
+    }
+    console.log('Added file contents:', text)
 }
 
-getFile('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').then(content => {
-  console.log('File content:', content.toString());
-}).catch(error => {
-  console.error('An error occurred:', error);
-});
+getFile('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e')
 
 // Example of use
 // getFile11('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 
-
+// async function retrieve (cid) {
+//   const client = create({ url: "http://127.0.0.1:5001" });
+//   const res = await client.get(cid)
+//   console.log(`Got a response! [${res.status}] ${res.statusText}`)
+//   if (!res.ok) {
+//     throw new Error(`failed to get ${cid}`)
+//   }
+// }
 
 
 //   // unpack File objects from the response
