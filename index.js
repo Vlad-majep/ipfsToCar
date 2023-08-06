@@ -4,12 +4,27 @@ import { Web3Storage } from 'web3.storage'
 
 async function retrieve (cid) {
   const client = create({ url: "http://127.0.0.1:5001" });
-  const res = await client.get(cid)
-  console.log(`Got a response! [${res.status}] ${res.statusText}`)
-  if (!res.ok) {
-    throw new Error(`failed to get ${cid}`)
-  }
+  client.get(cid, function (err, files) {
+    if (err) {
+      console.error('Ошибка при загрузке:', err);
+      return;
+    }
+    
+    files.forEach((file) => {
+      console.log(file.path);
+      console.log(file.content.toString('utf8'));
+    });
+  });
 }
+
+// Example of use
+retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html').catch(console.error); // site
+// convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
+
+
+
+
+
 
 // async function getLinks(ipfsPath) {
 //   const client = create({ url: "http://127.0.0.1:5001" });
@@ -19,12 +34,6 @@ async function retrieve (cid) {
 //   }
 //   console.log(links);
 // }
-// Example of use
-retrieve('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e/index.html').catch(console.error); // site
-// convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
-
-
-
 
 
 
