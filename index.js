@@ -8,12 +8,12 @@ import { create } from 'ipfs-http-client';
 
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
-
-  const links = [];
-  for await (const link of client.ls(ipfsPath)) {
-    links.push(link);
+  const res = await client.get(cid)
+  console.log(`Got a response! [${res.status}] ${res.statusText}`)
+  if (!res.ok) {
+    throw new Error(`failed to get ${cid}`)
   }
-  console.log(links);
+
 }
 getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e')
 
