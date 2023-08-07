@@ -5,20 +5,18 @@ import { create } from 'ipfs-http-client';
 // Example of use
 // getFile11('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
-
+const client = create({ url: "http://127.0.0.1:5001" });
 async function getLinks(ipfsPath) {
-  const client = create({ url: "http://127.0.0.1:5001" });
   const links = [];
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
-    retrieve(link.cid);
+    retrieve(link.path);
   }
   // console.log(links);
 }
 
 async function retrieve (cid) {
-  const client = create({ url: "http://127.0.0.1:5001" });
-  const res = await client.cat(cid)
+  const res = await client.get(cid)
   console.log(res)
 }
 
@@ -32,13 +30,6 @@ getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
 //   }
 //   // request succeeded! do something with the response object here...
 // }
-
-
-// function makeStorageClient () {
-//   return new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY4MmU1QTc4NDAzNTllNTU2NUFDMTgyOWNhNEMwMTA0MjYyMENDQkUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2ODkwMTMyODYyNTgsIm5hbWUiOiJ0ZXN0In0.OeWGKuWHSgGUOttrL4MqqdxSZZ3Z9pBM6tTX8O3oDlA" })
-// }
-
-
 
 
 
