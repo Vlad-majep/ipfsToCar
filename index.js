@@ -56,7 +56,7 @@ async function retrieve(cid, filePath) {
 
 getLinks(mainFolder).then(() => {
   console.log('All getLinks calls finished');
-  getCAr(mainFolder);
+  getCAr([mainFolder]);
 });
 
 
