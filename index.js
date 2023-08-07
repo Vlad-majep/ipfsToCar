@@ -4,41 +4,41 @@ import path from "path";
 import { Writable } from 'stream'
 import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
 import { filesFromPaths } from 'files-from-path'
-import { log } from 'console';
 
 
 const client = create({ url: "http://127.0.0.1:5001" });
 
-const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni'; // Основная папка
-async function getLinks(ipfsPath, localPath = mainFolder) {
-  const promises = [];
-  const links = [];
+const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni';
 
+// Убедитесь, что главная папка существует
+if (!fs.existsSync(mainFolder)) {
+  fs.mkdirSync(mainFolder, { recursive: true });
+}
+
+async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
     const newPath = path.join(localPath, link.name);
-
     if (link.type === "file") {
-      promises.push(retrieve(link.path, newPath));
-      links.push(newPath);
+      retrieve(link.path, newPath);
     } else {
       if (!fs.existsSync(newPath)) {
         fs.mkdirSync(newPath, { recursive: true });
       }
-      promises.push(getLinks(link.cid, newPath));
+      getLinks(link.cid, newPath);
     }
   }
-
-  await Promise.all(promises);
-
-  return links;
 }
 
-async function getCAr(files) {
-  await createDirectoryEncoderStream(files)
-  .pipeThrough(new CAREncoderStream())
-  .pipeTo(fs.createWriteStream('result.car'))
+async function getCAr(localPath) {
+  const { out, writer } = await createCar({
+    // Использовать папку, в которую вы сохранили файлы
+    root: localPath
+  });
 
+  writer.pipe(fs.createWriteStream('result.car'));
+  writer.on('finish', () => console.log('Файл CAR успешно записан'));
+  out.on('import', () => {});
 }
 
 async function retrieve(cid, filePath) {
@@ -53,14 +53,10 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-async function main() {
-  const files = await getLinks(mainFolder);
-  console.log("Все файлы сохранены. Преобразование в CAR...");
-  console.log(files);
-  await getCAr(files);
-}
-
-main().catch((error) => console.error(error));
+getLinks(mainFolder).then(() => {
+  // Вызовите getCAr после завершения операции сохранения всех файлов
+  getCAr(mainFolder);
+});
 
 
 //   // unpack File objects from the response
