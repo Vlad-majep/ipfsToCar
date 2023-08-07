@@ -16,7 +16,7 @@ async function getLinks(ipfsPath) {
 }
 
 async function retrieve (cid) {
-  const writeStream = fs.createWriteStream('output.txt');
+  const writeStream = fs.createWriteStream('output.car');
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
