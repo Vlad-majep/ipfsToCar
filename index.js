@@ -11,7 +11,7 @@ async function getLinks(ipfsPath) {
   const links = [];
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
-    retrieve(link);
+    retrieve("bafkreihoqdip7aibt6lyy6stp6gwazwdxk5d5lkm5e36xq2nd7zytrfswi");
   }
   // console.log(links);
 }
