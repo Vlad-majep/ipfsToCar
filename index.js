@@ -9,12 +9,11 @@ import { create } from 'ipfs-http-client';
 async function getLinks(ipfsPath) {
   const client = create({ url: "http://127.0.0.1:5001" });
   const links = [];
-  console.log("clien", client);
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
-    
+    console.log(link.cid);
   }
-  console.log(links.cid);
+  // console.log(links);
 }
 
 async function retrieve (cid) {
