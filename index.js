@@ -8,7 +8,7 @@ import { filesFromPaths } from 'files-from-path'
 
 const client = create({ url: "http://127.0.0.1:5001" });
 
-const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni';
+const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni'; // Основная папка
 
 // Убедитесь, что главная папка существует
 if (!fs.existsSync(mainFolder)) {
@@ -19,27 +19,27 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
     const newPath = path.join(localPath, link.name);
+
     if (link.type === "file") {
       retrieve(link.path, newPath);
     } else {
+      // Создание директории, если она еще не существует
       if (!fs.existsSync(newPath)) {
         fs.mkdirSync(newPath, { recursive: true });
       }
       getLinks(link.cid, newPath);
     }
   }
+  await getCAr([cid]);
 }
 
-async function getCAr(localPath) {
-  const { out, writer } = await createCar({
-    // Использовать папку, в которую вы сохранили файлы
-    root: localPath
-  });
 
-  writer.pipe(fs.createWriteStream('result.car'));
-  writer.on('finish', () => console.log('Файл CAR успешно записан'));
-  out.on('import', () => {});
-}
+async function getCAr(files) {
+    await createDirectoryEncoderStream(files)
+    .pipeThrough(new CAREncoderStream())
+    .pipeTo(fs.createWriteStream('result.car'))
+
+  }
 
 async function retrieve(cid, filePath) {
   const writeStream = fs.createWriteStream(filePath);
@@ -53,10 +53,7 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-getLinks(mainFolder).then(() => {
-  // Вызовите getCAr после завершения операции сохранения всех файлов
-  getCAr([mainFolder]);
-});
+getLinks(mainFolder);
 
 
 //   // unpack File objects from the response
