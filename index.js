@@ -16,8 +16,9 @@ async function getLinks(ipfsPath) {
 }
 
 async function retrieve (cid) {
-  const res = await client.get(cid)
-  console.log(res)
+  for await (const buf of ipfs.get(cid)) {
+    // do something with buf
+  }
 }
 
 getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
