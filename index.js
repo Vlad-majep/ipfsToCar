@@ -7,16 +7,18 @@ import fs from 'fs';
 // convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
 const client = create({ url: "http://127.0.0.1:5001" });
 async function getLinks(ipfsPath) {
-  const links = [];
   for await (const link of client.ls(ipfsPath)) {
-    links.push(link);
-    console.log();
-    retrieve(link.path, link.name);
+    console.log(link);
+    if(link.type === "file") {
+      retrieve(link.path, link.name);
+    } else {
+      getLinks(link.cid)
+    }
   }
 }
 
 async function retrieve (cid, name) {
-  const writeStream = fs.createWriteStream(`${name}.car`);
+  const writeStream = fs.createWriteStream(`${name}`);
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
