@@ -10,14 +10,13 @@ async function getLinks(ipfsPath) {
   const links = [];
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
-    console.log(link);
-    // retrieve(link.path);
+    console.log();
+    retrieve(link.path, link.name);
   }
-  // console.log(links);
 }
 
-async function retrieve (cid) {
-  const writeStream = fs.createWriteStream('output.car');
+async function retrieve (cid, name) {
+  const writeStream = fs.createWriteStream(`${name}.car`);
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
