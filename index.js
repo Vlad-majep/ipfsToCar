@@ -2,6 +2,9 @@ import { create } from 'ipfs-http-client';
 import fs from 'fs';
 import path from "path";
 
+
+const client = create({ url: "http://127.0.0.1:5001" });
+
 async function getLinks(ipfsPath, localPath = '.') {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
