@@ -14,8 +14,7 @@ async function getLinks(ipfsPath) {
     links.push(link);
     
   }
-  console.log(links);
-  await retrieve(links);
+  console.log(links.cid);
 }
 
 async function retrieve (cid) {
