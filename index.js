@@ -31,7 +31,7 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
       getLinks(link.cid, newPath);
     }
   }
-  await getCAr(ipfsPath);
+  await getCAr([ipfsPath]);
 }
 
 
