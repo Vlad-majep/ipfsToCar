@@ -4,7 +4,7 @@ import path from "path";
 import { Writable } from 'stream'
 import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
 import { filesFromPaths } from 'files-from-path'
-import { Transform } from 'stream';
+
 
 const client = create({ url: "http://127.0.0.1:5001" });
 
@@ -34,27 +34,13 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
 }
 
 
-class CAREncoderStream extends Transform {
-  // Implement your custom encoding logic here
-  _transform(chunk, encoding, callback) {
-    // Example: do something with chunk and call callback
-    const encodedChunk = yourEncodingLogic(chunk);
-    callback(null, encodedChunk);
-  }
-}
-
 async function getCAr(files) {
-  const filesSplit = await filesFromPaths(files);
+    const filesSlpit = await filesFromPaths(files)
+    await createDirectoryEncoderStream(filesSlpit)
+    .pipeThrough(new CAREncoderStream())
+    .pipe(fs.createWriteStream('result.car'))
 
-  const writeStream = fs.createWriteStream('result.car');
-  const encoderStream = new CAREncoderStream();
-
-  for (const file of filesSplit) {
-    // Assuming createDirectoryEncoderStream returns a readable stream
-    const readableStream = await createDirectoryEncoderStream(file);
-    readableStream.pipe(encoderStream).pipe(writeStream);
   }
-}
 
 async function retrieve(cid, filePath) {
   const writeStream = fs.createWriteStream(filePath);
