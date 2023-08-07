@@ -12,10 +12,10 @@ async function getLinks(ipfsPath) {
   console.log("clien", client);
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
-    await retrieve(link);
+    
   }
   console.log(links);
-
+  await retrieve(links);
 }
 
 async function retrieve (cid) {
