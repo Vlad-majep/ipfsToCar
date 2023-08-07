@@ -1,5 +1,5 @@
 import { create } from 'ipfs-http-client';
-
+const fs = require('fs');
 
 
 // Example of use
@@ -16,10 +16,15 @@ async function getLinks(ipfsPath) {
 }
 
 async function retrieve (cid) {
-  for await (const buf of client.get(cid)) {
-    // do something with buf
-    console.log(buf);
+  const writeStream = fs.createWriteStream('output.txt');
+
+  for await (const file of client.get(cid)) {
+    for await (const chunk of file.content) {
+      writeStream.write(chunk);
+    }
   }
+  writeStream.end();
+  console.log('Файл успешно записан');
 }
 
 getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
