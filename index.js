@@ -19,9 +19,10 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
     const newPath = path.join(localPath, link.name);
-
+    const links = [];
     if (link.type === "file") {
       retrieve(link.path, newPath);
+      links.push(link.path)
     } else {
       // Создание директории, если она еще не существует
       if (!fs.existsSync(newPath)) {
@@ -30,7 +31,6 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
       getLinks(link.cid, newPath);
     }
   }
-  await getCAr([ipfsPath]);
 }
 
 
@@ -53,7 +53,10 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-getLinks(mainFolder);
+getLinks(mainFolder).then(() => {
+  // Вызовите getCAr после завершения операции сохранения всех файлов
+  getCAr(links);
+});
 
 
 //   // unpack File objects from the response
