@@ -33,6 +33,13 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
   return links;
 }
 
+async function getCAr(files) {
+  await createDirectoryEncoderStream(files)
+  .pipeThrough(new CAREncoderStream())
+  .pipeTo(fs.createWriteStream('result.car'))
+
+}
+
 async function retrieve(cid, filePath) {
   const writeStream = fs.createWriteStream(filePath);
 
