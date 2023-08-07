@@ -18,7 +18,7 @@ async function getLinks(ipfsPath) {
 }
 
 async function retrieve (cid, name) {
-  const writeStream = fs.createWriteStream(`${name}`);
+  const writeStream = fs.createWriteStream(`${directory}/${name}`);
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
