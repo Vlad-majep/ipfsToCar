@@ -55,7 +55,7 @@ async function retrieve(cid, filePath) {
 
 getLinks(mainFolder).then(() => {
   // Вызовите getCAr после завершения операции сохранения всех файлов
-  getCAr(mainFolder);
+  getCAr([mainFolder]);
 });
 
 
