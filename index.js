@@ -18,6 +18,7 @@ async function getLinks(ipfsPath) {
 async function retrieve (cid) {
   for await (const buf of ipfs.get(cid)) {
     // do something with buf
+    console.log(buf);
   }
 }
 
