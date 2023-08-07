@@ -1,5 +1,5 @@
 import { create } from 'ipfs-http-client';
-const fs = require('fs');
+import { fs }  from 'fs';
 
 
 // Example of use
