@@ -4,6 +4,7 @@ import path from "path";
 import { Writable } from 'stream'
 import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
 import { filesFromPaths } from 'files-from-path'
+import { log } from 'console';
 
 
 const client = create({ url: "http://127.0.0.1:5001" });
@@ -55,6 +56,7 @@ async function retrieve(cid, filePath) {
 async function main() {
   const files = await getLinks(mainFolder);
   console.log("Все файлы сохранены. Преобразование в CAR...");
+  console.log(files);
   await getCAr(files);
 }
 
