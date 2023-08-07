@@ -1,34 +1,37 @@
 import { create } from 'ipfs-http-client';
 import fs from 'fs';
+import path from "path";
 
-
-// Example of use
-// getFile11('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e').catch(console.error); // site
-// convertHashToCar('bafybeibrkegmkwxp46rtz63gu25exeexhbzu42gye6wqm3w3i2ok4qalpi').catch(console.error); // pepa
-const client = create({ url: "http://127.0.0.1:5001" });
-async function getLinks(ipfsPath) {
+async function getLinks(ipfsPath, localPath = '.') {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
-    if(link.type === "file") {
-      retrieve(link.path, link.name);
+    const newPath = path.join(localPath, link.name);
+
+    if (link.type === "file") {
+      retrieve(link.path, newPath);
     } else {
-      getLinks(link.cid)
+      // Создание директории, если она еще не существует
+      if (!fs.existsSync(newPath)) {
+        fs.mkdirSync(newPath, { recursive: true });
+      }
+      getLinks(link.cid, newPath);
     }
   }
 }
 
-async function retrieve (cid, name) {
-  const writeStream = fs.createWriteStream(`${directory}/${name}`);
+async function retrieve(cid, filePath) {
+  const writeStream = fs.createWriteStream(filePath);
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
     console.log(buf);
   }
+
   writeStream.end();
   console.log('Файл успешно записан');
 }
 
-getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
+getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni');
 
 
 //   // unpack File objects from the response
