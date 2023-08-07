@@ -1,6 +1,9 @@
 import { create } from 'ipfs-http-client';
 import fs from 'fs';
 import path from "path";
+import { Writable } from 'stream'
+import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
+import { filesFromPaths } from 'files-from-path'
 
 
 const client = create({ url: "http://127.0.0.1:5001" });
@@ -27,7 +30,16 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
       getLinks(link.cid, newPath);
     }
   }
+  await getCAr(ipfsPath);
 }
+
+
+async function getCAr(files) {
+    await createDirectoryEncoderStream(files)
+    .pipeThrough(new CAREncoderStream())
+    .pipeTo(fs.createWriteStream('result.car'))
+
+  }
 
 async function retrieve(cid, filePath) {
   const writeStream = fs.createWriteStream(filePath);
