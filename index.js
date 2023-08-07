@@ -35,7 +35,7 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
 
 
 async function getCAr(files) {
-    await createDirectoryEncoderStream(files)
+    await createDirectoryEncoderStream(`/${files}`)
     .pipeThrough(new CAREncoderStream())
     .pipeTo(fs.createWriteStream('result.car'))
 
