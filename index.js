@@ -19,9 +19,10 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
     const newPath = path.join(localPath, link.name);
-
+    const links = [];
     if (link.type === "file") {
       retrieve(link.path, newPath);
+      links.push(link.name)
     } else {
       // Создание директории, если она еще не существует
       if (!fs.existsSync(newPath)) {
@@ -30,7 +31,7 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
       getLinks(link.cid, newPath);
     }
   }
-  await getCAr(ipfsPath);
+  await getCAr(links);
 }
 
 
