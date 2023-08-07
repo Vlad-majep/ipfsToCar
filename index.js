@@ -15,49 +15,29 @@ if (!fs.existsSync(mainFolder)) {
   fs.mkdirSync(mainFolder, { recursive: true });
 }
 
-let activeCalls = 0; // Счётчик активных вызовов
-const allCallsFinished = new Promise(resolve => {
-  // Проверяет, все ли вызовы завершены, и разрешает промис, если да
-  function checkIfFinished() {
-    if (activeCalls === 0) {
-      resolve();
-    }
-  }
-
-  async function getLinks(ipfsPath, localPath = mainFolder) {
-    activeCalls++; // Увеличивает счётчик при начале вызова
-    for await (const link of client.ls(ipfsPath)) {
-      console.log(link);
-      const newPath = path.join(localPath, link.name);
-      const links = [];
-      if (link.type === "file") {
-        retrieve(link.path, newPath);
-        links.push(link.path);
-      } else {
-        if (!fs.existsSync(newPath)) {
-          fs.mkdirSync(newPath, { recursive: true });
-        }
-        getLinks(link.cid, newPath);
+async function getLinks(ipfsPath, localPath = mainFolder) {
+  for await (const link of client.ls(ipfsPath)) {
+    console.log(link);
+    const newPath = path.join(localPath, link.name);
+    const links = [];
+    if (link.type === "file") {
+      retrieve(link.path, newPath);
+      links.push(link.path)
+    } else {
+      // Создание директории, если она еще не существует
+      if (!fs.existsSync(newPath)) {
+        fs.mkdirSync(newPath, { recursive: true });
       }
+      getLinks(link.cid, newPath);
     }
-    activeCalls--; // Уменьшает счётчик после окончания вызова
-    checkIfFinished(); // Проверяет, все ли вызовы завершены
   }
-});
-
-// Сначала запускает getLinks
-getLinks(mainFolder);
-// Затем ждёт, пока все вызовы getLinks завершатся, и вызывает другую функцию
-allCallsFinished.then(() => {
-  console.log('All getLinks calls finished');
-  // Вызовите здесь вашу другую функцию
-  getCAr(links);
-});
-
+  await getCAr(ipfsPath);
+}
 
 
 async function getCAr(files) {
-    await createDirectoryEncoderStream(files)
+    const filesSlpit = await filesFromPaths(files)
+    await createDirectoryEncoderStream(filesSlpit)
     .pipeThrough(new CAREncoderStream())
     .pipeTo(fs.createWriteStream('result.car'))
 
