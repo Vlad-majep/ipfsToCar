@@ -5,7 +5,14 @@ import path from "path";
 
 const client = create({ url: "http://127.0.0.1:5001" });
 
-async function getLinks(ipfsPath, localPath = '.') {
+const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni'; // Основная папка
+
+// Убедитесь, что главная папка существует
+if (!fs.existsSync(mainFolder)) {
+  fs.mkdirSync(mainFolder, { recursive: true });
+}
+
+async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
     console.log(link);
     const newPath = path.join(localPath, link.name);
@@ -34,7 +41,7 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni');
+getLinks(mainFolder);
 
 
 //   // unpack File objects from the response
