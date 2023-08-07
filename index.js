@@ -15,7 +15,7 @@ async function getLinks(ipfsPath) {
   }
 
 }
-getLinks('bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e')
+getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
 
 
 //   // unpack File objects from the response
