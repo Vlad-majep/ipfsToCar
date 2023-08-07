@@ -12,8 +12,19 @@ async function getLinks(ipfsPath) {
   console.log("clien", client);
   for await (const link of client.ls(ipfsPath)) {
     links.push(link);
+    await retrieve(link);
   }
   console.log(links);
+
+}
+
+async function retrieve (cid) {
+  const client = create({ url: "http://127.0.0.1:5001" });
+  const res = await client.get(cid)
+  console.log(`Got a response! [${res.status}] ${res.statusText}`)
+  if (!res.ok) {
+    throw new Error(`failed to get ${cid}`)
+  }
 }
 
 getLinks('bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni')
