@@ -8,7 +8,7 @@ import { filesFromPaths } from 'files-from-path'
 
 const client = create({ url: "http://127.0.0.1:5001" });
 
-const mainFolder = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni'; // Основная папка
+const mainFolder = 'QmW9doQsy4uMgsRrB9KpHgZDH577nHU2qfPxCEpHQK2e1s'; // Основная папка
 
 // Убедитесь, что главная папка существует
 if (!fs.existsSync(mainFolder)) {
