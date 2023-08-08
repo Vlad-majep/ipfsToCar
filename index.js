@@ -35,6 +35,7 @@ async function getLinks(ipfsPath, localPath = mainFolder) {
 
 
 async function getCAr(files) {
+  console.log(files);
     const filesSlpit = await filesFromPaths(files)
     await createDirectoryEncoderStream(filesSlpit)
     .pipeThrough(new CAREncoderStream())
@@ -55,7 +56,7 @@ async function retrieve(cid, filePath) {
 
 getLinks(mainFolder).then(() => {
   console.log('All getLinks calls finished');
-  getCAr([mainFolder])
+  getCAr([mainFolder]);
 });
 
 
