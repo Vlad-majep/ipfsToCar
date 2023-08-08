@@ -39,6 +39,7 @@ async function getCAr(files) {
     await createDirectoryEncoderStream(filesSlpit)
     .pipeThrough(new CAREncoderStream())
     .pipeTo(Writable.toWeb(fs.createWriteStream('result.car')))
+    console.log("Перебразование в кар файл прошло успешно!");
   }
 
 async function retrieve(cid, filePath) {
@@ -49,7 +50,6 @@ async function retrieve(cid, filePath) {
   }
 
   writeStream.end();
-  console.log('Файл успешно записан');
 }
 
 getLinks(mainFolder).then(() => {
