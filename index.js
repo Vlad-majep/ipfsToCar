@@ -17,7 +17,6 @@ if (!fs.existsSync(mainFolder)) {
 
 async function getLinks(ipfsPath, localPath = mainFolder) {
   for await (const link of client.ls(ipfsPath)) {
-    console.log(link);
     const newPath = path.join(localPath, link.name);
     const links = [];
     if (link.type === "file") {
@@ -47,7 +46,6 @@ async function retrieve(cid, filePath) {
 
   for await (const buf of client.get(cid)) {
     writeStream.write(buf);
-    console.log(buf);
   }
 
   writeStream.end();
@@ -55,7 +53,6 @@ async function retrieve(cid, filePath) {
 }
 
 getLinks(mainFolder).then(() => {
-  console.log('All getLinks calls finished');
   getCAr([mainFolder]);
 });
 
