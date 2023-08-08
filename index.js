@@ -38,8 +38,7 @@ async function getCAr(files) {
     const filesSlpit = await filesFromPaths(files)
     await createDirectoryEncoderStream(filesSlpit)
     .pipeThrough(new CAREncoderStream())
-    .pipe(fs.createWriteStream('result.car'))
-
+    .pipeTo(Writable.toWeb(fs.createWriteStream('result.car')))
   }
 
 async function retrieve(cid, filePath) {
@@ -54,10 +53,7 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-getLinks(mainFolder).then(() => {
-  console.log('All getLinks calls finished');
-  getCAr([mainFolder]);
-});
+getLinks(mainFolder)
 
 
 //   // unpack File objects from the response
