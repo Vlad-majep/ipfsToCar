@@ -53,7 +53,10 @@ async function retrieve(cid, filePath) {
   console.log('Файл успешно записан');
 }
 
-getLinks(mainFolder)
+getLinks(mainFolder).then(() => {
+  console.log('All getLinks calls finished');
+  getCAr([mainFolder])
+});
 
 
 //   // unpack File objects from the response
