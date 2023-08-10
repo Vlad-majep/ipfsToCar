@@ -13,7 +13,7 @@ const httpConnector = new HttpJsonRpcConnector({ url: localNodeUrl, token: signA
 const lotusClient = new LotusClient(httpConnector);
 const lotusWallet = new LotusWalletProvider(lotusClient);
 const client = create({ url: "http://127.0.0.1:5001" });
-const ipfsHash = 'QmW9doQsy4uMgsRrB9KpHgZDH577nHU2qfPxCEpHQK2e1s'; // Основная папка
+const ipfsHash = 'QmW9doQsy4uMgsRrB9KpHgZDH577nHU2qfPxCEpHQK2e1s'; 
 
 async function getLinks(ipfsPath, localPath = ipfsHash) {
   if (!fs.existsSync(ipfsHash)) {
@@ -26,7 +26,6 @@ async function getLinks(ipfsPath, localPath = ipfsHash) {
       retrieve(link.path, newPath);
       links.push(link.path)
     } else {
-      // Создание директории, если она еще не существует
       if (!fs.existsSync(newPath)) {
         fs.mkdirSync(newPath, { recursive: true });
       }
@@ -41,8 +40,8 @@ async function getCAr(files) {
     const filesSlpit = await filesFromPaths(files)
     await createDirectoryEncoderStream(filesSlpit)
     .pipeThrough(new CAREncoderStream())
-    .pipeTo(Writable.toWeb(fs.createWriteStream('result.car')))
-    console.log("Перебразование в кар файл прошло успешно!");
+    .pipeTo(Writable.toWeb(fs.createWriteStream(`${files[0]}.car`)))
+    console.log("Transfer to car file was successful!");
   }
 
 async function retrieve(cid, filePath) {
@@ -90,4 +89,6 @@ async function storeFile(){
 
 getLinks(ipfsHash).then(() => {
   getCAr([ipfsHash]);
+}).then(() => {
+  storeFile(`${ipfsHash}.car`);
 });
