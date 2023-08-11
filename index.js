@@ -4,14 +4,14 @@ import path from "path";
 import { Writable } from 'stream'
 import { createDirectoryEncoderStream, CAREncoderStream } from 'ipfs-car'
 import { filesFromPaths } from 'files-from-path'
-import { HttpJsonRpcConnector, LotusWalletProvider, LotusClient} from "filecoin.js";
+// import { HttpJsonRpcConnector, LotusWalletProvider, LotusClient} from "filecoin.js";
 
 
-const localNodeUrl = "http://127.0.0.1:1234/rpc/v0";
-const signAuthToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ro6hN4mxR_Xsv47vmkM59_5H84VmYwYY3GM9gjLW4zk"
-const httpConnector = new HttpJsonRpcConnector({ url: localNodeUrl, token: signAuthToken });
-const lotusClient = new LotusClient(httpConnector);
-const lotusWallet = new LotusWalletProvider(lotusClient);
+// const localNodeUrl = "http://127.0.0.1:1234/rpc/v0";
+// const signAuthToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ro6hN4mxR_Xsv47vmkM59_5H84VmYwYY3GM9gjLW4zk"
+// const httpConnector = new HttpJsonRpcConnector({ url: localNodeUrl, token: signAuthToken });
+// const lotusClient = new LotusClient(httpConnector);
+// const lotusWallet = new LotusWalletProvider(lotusClient);
 const client = create({ url: "http://127.0.0.1:5001" });
 const ipfsHash = 'bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e'; 
 
@@ -54,38 +54,38 @@ async function retrieve(cid, filePath) {
   writeStream.end();
 }
 
-async function storeFile(){
-  try {
-    // 1. import data to lotus
-    const importResult = await lotusClient.client.import({
-      Path: "5gb-filecoin-huyni.bin",
-      IsCAR: false,
-  });
-  console.log(importResult);
-  const queryOffer = await lotusClient.client.minerQueryOffer('f01832584', importResult);
-  console.log(queryOffer);
-  const isActive = importResult.Root["/"] === queryOffer.Root["/"];
-  console.log("Provider is active: ", isActive);
-    //3. start storage deal with SP
-    if(isActive){
-      const dealCid = await lotusClient.client.startDeal({
-        Data: {
-          TransferType: 'graphsync',
-          Root: importResult.Root,
-        },
-        Miner: 'f01832584',
-        Wallet: await lotusWallet.getDefaultAddress(),
-        EpochPrice: queryOffer["MinPrice"],
-        MinBlocksDuration: 434000,
-      });
+// async function storeFile(){
+//   try {
+//     // 1. import data to lotus
+//     const importResult = await lotusClient.client.import({
+//       Path: "5gb-filecoin-huyni.bin",
+//       IsCAR: false,
+//   });
+//   console.log(importResult);
+//   const queryOffer = await lotusClient.client.minerQueryOffer('f01832584', importResult);
+//   console.log(queryOffer);
+//   const isActive = importResult.Root["/"] === queryOffer.Root["/"];
+//   console.log("Provider is active: ", isActive);
+//     //3. start storage deal with SP
+//     if(isActive){
+//       const dealCid = await lotusClient.client.startDeal({
+//         Data: {
+//           TransferType: 'graphsync',
+//           Root: importResult.Root,
+//         },
+//         Miner: 'f01832584',
+//         Wallet: await lotusWallet.getDefaultAddress(),
+//         EpochPrice: queryOffer["MinPrice"],
+//         MinBlocksDuration: 434000,
+//       });
 
       
-      console.log("dealCID is ", dealCid);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
+//       console.log("dealCID is ", dealCid);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 getLinks(ipfsHash).then(() => {
   getCAr([ipfsHash]);
