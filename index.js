@@ -89,6 +89,4 @@ async function storeFile(){
 
 getLinks(ipfsHash).then(() => {
   getCAr([ipfsHash]);
-}).then(() => {
-  storeFile(`${ipfsHash}.car`);
 });
