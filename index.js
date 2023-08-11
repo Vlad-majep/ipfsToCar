@@ -13,7 +13,7 @@ const httpConnector = new HttpJsonRpcConnector({ url: localNodeUrl, token: signA
 const lotusClient = new LotusClient(httpConnector);
 const lotusWallet = new LotusWalletProvider(lotusClient);
 const client = create({ url: "http://127.0.0.1:5001" });
-const ipfsHash = 'QmW9doQsy4uMgsRrB9KpHgZDH577nHU2qfPxCEpHQK2e1s'; 
+const ipfsHash = 'bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e'; 
 
 async function getLinks(ipfsPath, localPath = ipfsHash) {
   if (!fs.existsSync(ipfsHash)) {
