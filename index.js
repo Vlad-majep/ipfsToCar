@@ -13,7 +13,7 @@ import { filesFromPaths } from 'files-from-path'
 // const lotusClient = new LotusClient(httpConnector);
 // const lotusWallet = new LotusWalletProvider(lotusClient);
 const client = create({ url: "http://127.0.0.1:5001" });
-const ipfsHash = 'bafzbeicnvxhpjwpnt5ju3h5mtenp3y63rl272sib6ebauutmqe2ymax36e'; 
+const ipfsHash = 'bafybeiceaoai4afxqqtb7dyh6duwrcg5fkqqdu7xcmbwulvydlluae3xni'; 
 
 async function getLinks(ipfsPath, localPath = ipfsHash) {
   if (!fs.existsSync(ipfsHash)) {
